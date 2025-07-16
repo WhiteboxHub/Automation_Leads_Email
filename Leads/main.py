@@ -323,7 +323,7 @@ def run():
     cursor = conn.cursor(dictionary=True)
     cursor.execute("""
         SELECT leadid, name, email FROM leads
-        WHERE unsubscribe != 'yes' AND email_sent != 'yes'
+        WHERE massemail_unsubscribe != 'yes' AND massemail_email_sent != 'yes'
         LIMIT 100
     """)
     leads = cursor.fetchall()
@@ -334,7 +334,7 @@ def run():
     for lead in leads:
         try:
             send_email(lead["email"], lead["name"])
-            cursor.execute("UPDATE leads SET email_sent = 'yes' WHERE leadid = %s", (lead["leadid"],))
+            cursor.execute("UPDATE leads SET massemail_email_sent = 'yes' WHERE leadid = %s", (lead["leadid"],))
             log_sent(lead["email"], lead["name"])
             print(f"✅ Sent to {lead['email']}")
         except Exception as e:
