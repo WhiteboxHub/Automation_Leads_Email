@@ -9,12 +9,12 @@ cd Leads
 
 ## Create a virtual environment and activate it:
 ```
-python -m venv YOUR_FOLDER_NAME
+python -m venv env
 ```
     
 ### for mac/linux platforms:  
 ```
-source YOUR_FOLDER_NAME/bin/activate
+source env/bin/activate
 ```
 
 ### for Windows platforms   
