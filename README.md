@@ -19,8 +19,8 @@ source env/bin/activate
 
 ### for Windows platforms   
 ```
-cd YOUR_FOLDER_NAME\Scripts
-activate
+.venv\Scripts\activate
+
 ```
 
 ### Install Dependencies
