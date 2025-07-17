@@ -284,7 +284,7 @@ def send_email(to_email, to_name):
             <hr style="margin-top: 30px; border: none; border-top: 1px solid #ddd;">
             <p style="font-size: 12px; color: #888; text-align: center;">
                 Don’t want to hear from us again? 
-                <a href="http://localhost:3000/leads_unsubscribe?email={to_email}" style="color:#888;">Unsubscribe</a>
+                <a href="https://www.whitebox-learning.com/leads_unsubscribe?email={to_email}" style="color:#888;">Unsubscribe</a>
             </p>
         </div>
     </body>
