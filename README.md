@@ -46,8 +46,7 @@ DB_USER=
 DB_PASS=
 DB_NAME=
 
-UNSUBSCRIBE_URL=https://whitebox-learning.com/unsubscribe
-# UNSUBSCRIBE_URL=http://localhost:8000/api/unsubscribe
+REPLY_TO_EMAIL=
 ```
 
 
