@@ -1,5 +1,10 @@
 
 
+
+
+
+
+
 # import mysql.connector, smtplib, os, csv
 # from email.mime.text import MIMEText
 # from email.mime.multipart import MIMEMultipart
@@ -15,7 +20,7 @@
 # SMTP_PASS = os.getenv("EMAIL_PASS")
 # SMTP_HOST = os.getenv("SMTP_SERVER")
 # SMTP_PORT = int(os.getenv("SMTP_PORT"))
-# UNSUBSCRIBE_URL = os.getenv("UNSUBSCRIBE_URL")
+# # UNSUBSCRIBE_URL = os.getenv("UNSUBSCRIBE_URL")
 
 # # Database Configuration
 # db_config = {
@@ -58,7 +63,7 @@
 
 #             <p>At <strong>Whitebox Learning</strong>, we've supported many professionals like you through QA and UI training programs. Now, we’re excited to help professionals transition into <strong>AI/ML careers</strong>.</p>
 
-#             <p>In just the last 1 months, our AI/ML program has helped <strong>3 candidates</strong> become AI Engineers and ML Engineers.</p>
+#             <p>In just the last 1 months, our AI/ML program has helped <strong>3 candidates</strong> become AI Engineers/ML Engineers.</p>
 
 #             <!-- Insert GIF with smaller size -->
 #             <div style="text-align: center; margin: 20px 0;">
@@ -105,7 +110,7 @@
 #             <hr style="margin-top: 30px; border: none; border-top: 1px solid #ddd;">
 #             <p style="font-size: 12px; color: #888; text-align: center;">
 #                 Don’t want to hear from us again? 
-#                 <a href="{UNSUBSCRIBE_URL}?email={to_email}" style="color:#888;">Unsubscribe</a>
+#                 <a href="https://whitebox-learning.com/leads_unsubscribe?email={to_email}" style="color:#888;">Unsubscribe</a>
 #             </p>
 #         </div>
 #     </body>
@@ -172,6 +177,14 @@
 
 
 
+
+
+
+
+
+
+
+
 import mysql.connector, smtplib, os, csv
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -187,7 +200,7 @@ SMTP_USER = os.getenv("EMAIL_USER")
 SMTP_PASS = os.getenv("EMAIL_PASS")
 SMTP_HOST = os.getenv("SMTP_SERVER")
 SMTP_PORT = int(os.getenv("SMTP_PORT"))
-UNSUBSCRIBE_URL = os.getenv("UNSUBSCRIBE_URL")
+REPLY_TO_EMAIL = os.getenv("REPLY_TO_EMAIL")
 
 # Database Configuration
 db_config = {
@@ -215,8 +228,6 @@ def send_email(to_email, to_name):
     <html>
     <body style="font-family: Arial, sans-serif; font-size: 15px; color: #333; line-height: 1.6; margin: 0; padding: 0; background-color: #f6f8fa;">
         <div style="max-width: 600px; margin: auto; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-            
-            <!-- Header with logo and brand name -->
             <div style="text-align: center; margin-bottom: 20px;">
                 <img src="https://www.whitebox-learning.com/_next/static/media/wbl-dark.364b4e0a.png"
                      alt="Whitebox Learning Logo"
@@ -230,14 +241,12 @@ def send_email(to_email, to_name):
 
             <p>At <strong>Whitebox Learning</strong>, we've supported many professionals like you through QA and UI training programs. Now, we’re excited to help professionals transition into <strong>AI/ML careers</strong>.</p>
 
-            <p>In just the last 1 months, our AI/ML program has helped <strong>3 candidates</strong> become AI Engineers and ML Engineers.</p>
+            <p>In just the last 1 months, our AI/ML program has helped <strong>3 candidates</strong> become AI Engineers / ML Engineers.</p>
 
-            <!-- Insert GIF with smaller size -->
             <div style="text-align: center; margin: 20px 0;">
                 <img src="cid:promo_gif" alt="AI/ML Journey" style="width: 100%; max-width: 360px; border-radius: 6px;">
             </div>
 
-            <!-- New business model -->
             <p><strong>We have a new business model where we help you secure full-time roles directly with clients instead of contracting through us.</strong></p>
 
             <p><strong>Our training covers:</strong></p>
@@ -249,7 +258,6 @@ def send_email(to_email, to_name):
 
             <p>If you or someone you know is exploring this path, we’d love to help. You can join the program, refer a friend, or reach out with questions.</p>
 
-            <!-- Bootstrap-style action buttons -->
             <div style="text-align: center; margin: 25px 0;">
                 <a href="https://www.whitebox-learning.com/signup" target="_blank" style="background-color:#0d6efd; color:#fff; padding:10px 20px; text-decoration:none; border-radius:5px; display:inline-block; margin:5px;">🔗 Learn More</a>
                 <a href="tel:+19255571053" style="background-color:#198754; color:#fff; padding:10px 20px; text-decoration:none; border-radius:5px; display:inline-block; margin:5px;">📞 Call Us</a>
@@ -264,7 +272,6 @@ def send_email(to_email, to_name):
                 <a href="https://www.whitebox-learning.com">whitebox-learning.com</a>
             </p>
 
-            <!-- Social Media Buttons -->
             <div style="text-align: center; margin-top: 30px;">
                 <a href="https://www.facebook.com/WBLAIML" target="_blank" style="background-color:#3b5998; color:#fff; padding:8px 16px; text-decoration:none; border-radius:5px; display:inline-block; margin:5px;">
                     <img src="https://cdn-icons-png.flaticon.com/24/145/145802.png" alt="Facebook" style="height: 18px; vertical-align: middle; margin-right: 6px;"> Facebook
@@ -277,7 +284,7 @@ def send_email(to_email, to_name):
             <hr style="margin-top: 30px; border: none; border-top: 1px solid #ddd;">
             <p style="font-size: 12px; color: #888; text-align: center;">
                 Don’t want to hear from us again? 
-                <a href="https://whitebox-learning.com/leads_unsubscribe?email={to_email}" style="color:#888;">Unsubscribe</a>
+                <a href="http://localhost:3000/leads_unsubscribe?email={to_email}" style="color:#888;">Unsubscribe</a>
             </p>
         </div>
     </body>
@@ -288,6 +295,7 @@ def send_email(to_email, to_name):
     msg["Subject"] = subject
     msg["From"] = f"Whitebox Learning <{SMTP_USER}>"
     msg["To"] = to_email
+    msg["Reply-To"] = REPLY_TO_EMAIL  # Ensures replies go to the recruiting team
 
     msg_alternative = MIMEMultipart("alternative")
     msg.attach(msg_alternative)
