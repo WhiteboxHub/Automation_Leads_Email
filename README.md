@@ -19,7 +19,7 @@ source env/bin/activate
 
 ### for Windows platforms   
 ```
-.venv\Scripts\activate
+.env\Scripts\activate
 
 ```
 
