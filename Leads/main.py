@@ -492,6 +492,13 @@ def run():
         return
 
     for lead in leads:
+        
+        email = lead.get("email", "").strip()
+        name = lead.get("full_name", "").strip()
+    
+        if not email or '@' not in email:
+          print(f"⚠️ Skipping invalid email: {email}")
+          continue
         try:
             send_email(lead["email"], lead["full_name"])
             cursor.execute("UPDATE leads_new SET massemail_email_sent = 'yes', last_modified = NOW() WHERE id = %s", (lead["id"],))
