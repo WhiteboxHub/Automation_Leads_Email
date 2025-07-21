@@ -37,25 +37,27 @@
 const { exec } = require("child_process");
 const path = require("path");
 const os = require("os");
+const cron = require("node-cron");
 
-// Build the correct Python command for the OS
 const pythonCmd = os.platform() === "win32" ? "python" : "python3";
-
-// Get absolute path to the script
 const scriptPath = path.join(__dirname, "main.py");
 
-console.log("📦 Running script:", scriptPath);
+function runPythonScript() {
+  console.log("📦 Running script:", scriptPath);
+  exec(`${pythonCmd} "${scriptPath}"`, (error, stdout, stderr) => {
+    if (error) {
+      console.error("❌ ERROR:", error.message);
+      return;
+    }
+    if (stderr) {
+      console.error("⚠️ STDERR:", stderr);
+    }
+    console.log("✅ OUTPUT:\n", stdout);
+  });
+}
 
-// Execute the Python script
-exec(`${pythonCmd} "${scriptPath}"`, (error, stdout, stderr) => {
-  if (error) {
-    console.error("❌ ERROR:", error.message);
-    return;
-  }
-
-  if (stderr) {
-    console.error("⚠️ STDERR:", stderr);
-  }
-
-  console.log("✅ OUTPUT:\n", stdout);
+// Schedule to run every day at 8:00 AM
+cron.schedule("0 8 * * *", () => {
+  console.log("⏰ Running daily at 8:00 AM...");
+  runPythonScript();
 });
