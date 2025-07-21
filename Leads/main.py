@@ -317,7 +317,7 @@
 #     conn = mysql.connector.connect(**db_config)
 #     cursor = conn.cursor(dictionary=True)
 #     cursor.execute("""
-#         SELECT id, full_name, email FROM leads_new
+#         SELECT leadid, name, email FROM leads
 #         WHERE massemail_unsubscribe != 'yes' AND massemail_email_sent != 'yes'
 #         LIMIT 100
 #     """)
@@ -329,7 +329,7 @@
 #     for lead in leads:
 #         try:
 #             send_email(lead["email"], lead["name"])
-#             cursor.execute("UPDATE leads_new SET massemail_email_sent = 'yes' WHERE id = %s", (lead["id"],))
+#             cursor.execute("UPDATE leads SET massemail_email_sent = 'yes' WHERE leadid = %s", (lead["leadid"],))
 #             log_sent(lead["email"], lead["name"])
 #             print(f"✅ Sent to {lead['email']}")
 #         except Exception as e:
@@ -341,11 +341,6 @@
 
 # if __name__ == "__main__":
 #     run()
-
-
-
-
-
 
 
 
@@ -468,6 +463,7 @@ def send_email(to_email, to_name):
     msg.attach(msg_alternative)
     msg_alternative.attach(MIMEText(html_body, "html"))
 
+    # Attach GIF
     with open("vid-min.gif", "rb") as f:
         gif = MIMEImage(f.read(), _subtype="gif")
         gif.add_header("Content-ID", "<promo_gif>")
@@ -482,11 +478,14 @@ def send_email(to_email, to_name):
 def run():
     conn = mysql.connector.connect(**db_config)
     cursor = conn.cursor(dictionary=True)
+    
     cursor.execute("""
         SELECT id, full_name, email FROM leads_new
-        WHERE massemail_unsubscribe != 'yes' AND massemail_email_sent != 'yes'
+        WHERE massemail_unsubscribe COLLATE utf8_general_ci != 'yes'
+          AND massemail_email_sent COLLATE utf8_general_ci != 'yes'
         LIMIT 100
     """)
+    
     leads = cursor.fetchall()
     if not leads:
         print("✅ No emails to send.")
@@ -494,9 +493,10 @@ def run():
 
     for lead in leads:
         try:
-            send_email(lead["email"], lead["full_name"])  # changed from lead["name"]
-            cursor.execute("UPDATE leads_new SET massemail_email_sent = 'yes' WHERE id = %s", (lead["id"],))
-            log_sent(lead["email"], lead["full_name"])     # changed from lead["name"]
+            send_email(lead["email"], lead["full_name"])
+            cursor.execute("UPDATE leads_new SET massemail_email_sent = 'yes', last_modified = NOW() WHERE id = %s", (lead["id"],))
+            conn.commit()
+            log_sent(lead["email"], lead["full_name"])
             print(f"✅ Sent to {lead['email']}")
         except Exception as e:
             print(f"❌ Failed to send to {lead['email']}: {e}")
@@ -507,3 +507,4 @@ def run():
 
 if __name__ == "__main__":
     run()
+
