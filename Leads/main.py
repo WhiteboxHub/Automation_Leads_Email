@@ -488,7 +488,7 @@ def run():
     
     leads = cursor.fetchall()
     if not leads:
-        print("✅ No emails to send.")
+        print(" No emails to send.")
         return
 
     for lead in leads:
@@ -497,16 +497,16 @@ def run():
         name = lead.get("full_name", "").strip()
     
         if not email or '@' not in email:
-          print(f"⚠️ Skipping invalid email: {email}")
+          print(f" Skipping invalid email: {email}")
           continue
         try:
             send_email(lead["email"], lead["full_name"])
             cursor.execute("UPDATE leads_new SET massemail_email_sent = 'yes', last_modified = NOW() WHERE id = %s", (lead["id"],))
             conn.commit()
             log_sent(lead["email"], lead["full_name"])
-            print(f"✅ Sent to {lead['email']}")
+            print(f" Sent to {lead['email']}")
         except Exception as e:
-            print(f"❌ Failed to send to {lead['email']}: {e}")
+            print(f" Failed to send to {lead['email']}: {e}")
 
     conn.commit()
     cursor.close()

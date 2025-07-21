@@ -1,63 +1,21 @@
-// const cron = require('node-cron');
-// const { exec } = require('child_process');
-// const fs = require('fs');
-// const path = require('path');
+const schedule = require('node-schedule');
+const { exec } = require('child_process');
 
-// // Create a logs folder if it doesn't exist
-// const logDir = path.join(__dirname, 'logs');
-// if (!fs.existsSync(logDir)) {
-//   fs.mkdirSync(logDir);
-// }
-// const logFile = path.join(logDir, 'scheduler.log');
+// Schedule the job to run at 8 AM every day
+schedule.scheduleJob('38 12 * * *', function() {
+  console.log('Running main.py at 8 AM...');
 
-// // Helper to write to log file
-// function logToFile(message) {
-//   const timestamp = new Date().toISOString();
-//   fs.appendFileSync(logFile, `[${timestamp}] ${message}\n`);
-// }
-
-// // Schedule task
-// cron.schedule('46 22 * * *', () => {
-//   logToFile('⏰ Cron job started: Running Python script...');
-  
-//   exec('python3 main.py', (error, stdout, stderr) => {
-//     if (error) {
-//       logToFile(`❌ Error: ${error.message}`);
-//       return;
-//     }
-//     if (stderr) {
-//       logToFile(`⚠️ stderr: ${stderr}`);
-//     }
-//     logToFile(`✅ stdout: ${stdout}`);
-//   });
-// });
-
-
-
-const { exec } = require("child_process");
-const path = require("path");
-const os = require("os");
-const cron = require("node-cron");
-
-const pythonCmd = os.platform() === "win32" ? "python" : "python3";
-const scriptPath = path.join(__dirname, "main.py");
-
-function runPythonScript() {
-  console.log("📦 Running script:", scriptPath);
-  exec(`${pythonCmd} "${scriptPath}"`, (error, stdout, stderr) => {
+  // Execute the Python script
+  exec('python main.py', (error, stdout, stderr) => {
     if (error) {
-      console.error("❌ ERROR:", error.message);
+      console.error(`Error executing Python script: ${error}`);
       return;
     }
+    console.log(`Python script output: ${stdout}`);
     if (stderr) {
-      console.error("⚠️ STDERR:", stderr);
+      console.error(`Python script stderr: ${stderr}`);
     }
-    console.log("✅ OUTPUT:\n", stdout);
   });
-}
-
-// Schedule to run every day at 8:00 AM
-cron.schedule("0 8 * * *", () => {
-  console.log("⏰ Running daily at 8:00 AM...");
-  runPythonScript();
 });
+
+console.log('Scheduler started. Waiting to run main.py at 8 AM daily...');
